@@ -14,7 +14,7 @@ const pool = new Pool({
 socket.on("connect", () => {
   console.log("Conectado ao servidor WebSocket");
   const queryText
-   = 'CREATE TABLE IF NOT EXISTS json_data (id SERIAL PRIMARY KEY, rcinfo VARCHAR, srcIp VARCHAR, dstIp VARCHAR, srcPort VARCHAR, dstPort VARCHAR, payload VARCHAR, via VARCHAR, call_id VARCHAR, "from" VARCHAR, "to" VARCHAR, "date" VARCHAR, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);';
+   = 'CREATE TABLE IF NOT EXISTS json_data (id SERIAL PRIMARY KEY, type VARCHAR, rcinfo VARCHAR, srcIp VARCHAR, dstIp VARCHAR , srcPort VARCHAR, dstPort VARCHAR, payload VARCHAR, via VARCHAR, call_id VARCHAR, "from" VARCHAR, "to" VARCHAR, "date" VARCHAR, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);';
   pool.query(queryText);
 });
 
@@ -24,17 +24,19 @@ socket.on("hep", async (message) => {
   const {rcinfo, payload} = hep;
   const {srcPort, dstPort, srcIp, dstIp} = rcinfo;
 
+  const type = extractFristLineFromPayload(payload);
   const via = extractFieldFromPayload(payload, 'Via');
   const call_id = extractFieldFromPayload(payload, 'Call-ID');
   const from = extractFieldFromPayload(payload, 'From');
   const to = extractFieldFromPayload(payload, 'To');
   const date = extractFieldFromPayload(payload, 'Date');
 
-  const queryText = 'INSERT INTO json_data (rcinfo, srcIp, dstIp, srcPort, dstPort, payload, via, call_id, "from", "to", "date") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)';
+  const queryText = 'INSERT INTO json_data ("type", rcinfo, srcIp, dstIp, srcPort, dstPort, payload, via, call_id, "from", "to", "date") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)';
 
   try {
-    await pool.query(queryText, [rcinfo, srcIp, dstIp, srcPort, dstPort, payload, via, call_id, from, to, date]);
-    console.log("Dados salvos com sucesso:", message);
+    await pool.query(queryText, [type, rcinfo, srcIp, dstIp, srcPort, dstPort, payload, via, call_id, from, to, date]);
+    console.log("Dados salvos com sucesso");
+    //console.log("Dados salvos com sucesso:", message);
   } catch (err) {
     console.error("Erro ao salvar dados:", err);
   }
@@ -53,3 +55,9 @@ function extractFieldFromPayload(payload, fieldName) {
   const match = payload.match(regex);
   return match ? match[1].trim() : null;
 }
+
+function extractFristLineFromPayload(payload) {
+  const regex = new RegExp('^\\s*(.*)', 'i');
+  const match = payload.match(regex);
+  return match? match[1].trim() : null;
+};
