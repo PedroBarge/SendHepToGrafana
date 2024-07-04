@@ -16,7 +16,6 @@ socket.on("connect", () => {
 });
 
 socket.on("hep", async (message) => {
-  //console.log("Confirmação do servidor:", message);
   try{
     const queryText = 'INSERT INTO json_data (data) VALUES ($1)';
     await pool.query(queryText, [message]);

@@ -7,6 +7,7 @@
 const dgram = require('dgram');
 const http = require('http');
 const socketIo = require('socket.io');
+const HEPjs = require('hep-js');
 
 const app = http.createServer();
 const io = socketIo(app, {
@@ -25,14 +26,8 @@ const WS_PORT = 1234;
 
 //This function is used to decode the HEP packets received from the server (Asterisk)
 function decodeHEPMessage(message) {
-    const data = message.toString('utf8');
-
-    const sipStartIndex = data.indexOf('SIP/2.0');
-    if (sipStartIndex !== -1) {
-        const sipMessage = data.slice(sipStartIndex);
-        return { sipMessage };
-    }
-    
+    const data = HEPjs.decapsulate(message);
+    console.log("HEPjs: ", data);
     return { hep: data };    
 }
 
