@@ -2,16 +2,20 @@
   "name": "sendhepinfotografana",
   "version": "1.0.0",
   "main": "client.js",
-  "type": "module",
+  
   "scripts": {
     "start": "node client.js",
+    "startServer": "node Server/src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "dgram": "^1.0.1",
     "express": "^4.19.2",
+    "hep-js": "^1.0.20",
+    "http": "^0.0.1-security",
     "pg": "^8.12.0",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5"
