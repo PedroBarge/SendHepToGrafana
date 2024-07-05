@@ -1,7 +1,8 @@
-const dgram = require("dgram");
-const udpServer = dgram.createSocket("udp4");
-const decodeHEPMessage = require("./hepDecoder");
-const [io] = require("./webSocketServer");
+import dgram from "dgram";
+
+import { io } from "./webSocketServer.js";
+import { decodeHEPMessage } from "./hepDecoder.js";
+export const udpServer = dgram.createSocket("udp4");
 
 udpServer.on("message", (message) => {
   const hepData = decodeHEPMessage(message);
@@ -17,5 +18,3 @@ udpServer.on("error", (err) => {
   console.error(`UDP server error: ${err.stack}`);
   udpServer.close();
 });
-
-module.exports = udpServer;

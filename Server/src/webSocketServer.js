@@ -1,12 +1,10 @@
-const http = require("http");
-const socketIo = require("socket.io");
+import http from "http";
+import {Server} from "socket.io";
 
-const app = http.createServer();
-const io = socketIo(app, {
+export const app = http.createServer();
+export const io = new Server(app, {
   cors: {
     origin: "http://localhost:5173",
     methods: ["GET", "POST"],
   },
 });
-
-module.exports = { app, io };
