@@ -1,30 +1,11 @@
-import { io } from "socket.io-client";
-import { pool } from "./db.js";
-import { extractFristLineFromPayload, extractFieldFromPayload } from "./utils.js";
-
-const socket = io("http://192.168.2.235:1234");
+import socket from "./socketClient.js";
+import { createJsonDataTable } from "./queries.js";
+import { extractFieldFromPayload, extractFristLineFromPayload } from "./utils.js";
+import { pool } from "./database.js";
 
 socket.on("connect", () => {
   console.log("Conectado ao servidor WebSocket");
-  const queryText = `
-    CREATE TABLE IF NOT EXISTS json_data (
-      id SERIAL PRIMARY KEY, 
-      type VARCHAR, 
-      rcinfo VARCHAR, 
-      srcIp VARCHAR, 
-      dstIp VARCHAR, 
-      srcPort VARCHAR, 
-      dstPort VARCHAR, 
-      payload VARCHAR, 
-      via VARCHAR, 
-      call_id VARCHAR, 
-      "from" VARCHAR, 
-      "to" VARCHAR, 
-      "date" VARCHAR, 
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-  `;
-  pool.query(queryText);
+  createJsonDataTable();
 });
 
 socket.on("hep", async (message) => {
@@ -47,7 +28,7 @@ socket.on("hep", async (message) => {
   `;
 
   try {
-    await pool.query(queryText, [type, rcinfo, srcIp, dstIp, srcPort, dstPort, payload, via, call_id, from, to, date]);
+    const result = await pool.query(queryText, [type, rcinfo, srcIp, dstIp, srcPort, dstPort, payload, via, call_id, from, to, date]);
     console.log("Dados salvos com sucesso");
   } catch (err) {
     console.error("Erro ao salvar dados:", err);

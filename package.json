@@ -4,7 +4,7 @@
   "main": "client.js",
   "type": "module",
   "scripts": {
-    "start": "node client/index.js",
+    "start": "node client/app.js",
     "startServer": "node Server/src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

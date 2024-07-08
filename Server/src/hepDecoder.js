@@ -1,8 +1,6 @@
-const HEPjs = require('hep-js');
+import HEPjs from "hep-js";
 
-function decodeHEPMessage(message) {
-    const data = HEPjs.decapsulate(message);
-    return { hep: data };
+export function decodeHEPMessage(message) {
+  const data = HEPjs.decapsulate(message);
+  return { hep: data };
 }
-
-module.exports = decodeHEPMessage;
