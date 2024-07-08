@@ -8,3 +8,4 @@ export const pool = new Pool({
   password: "admin",
   port: 5432,
 });
+
