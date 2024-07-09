@@ -531,7 +531,7 @@ O Grafana fica a funcionar na porta 3000 podendo aceder através de http://local
 
 Para fazer login usamos “admin” tanto no nome de utilizador como na palavra-passe.
 
-![GrafanaLoginPage]()
+![GrafanaLoginPage](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/loginPage.png)
 
 ## 1º Passo | Associar uma Data Source ao Grafana
 
@@ -540,23 +540,23 @@ Antes de adionarmos uma Data Source teremos que também instalar um plugin
 No nosso lado esquerdo temos um menu vertical onde podemos selecionar o menu de plugins
 
  
-![GrafanaMenu]()
+![GrafanaMenu](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/menuPlugins.png)
 
 Dentro desse menu teremos que pesquisar pelo plugin do PostegreSQL
 
-![GrafanaPluginSearch]()
+![GrafanaPluginSearch](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/pluginPostegre.png)
 
 Ao aceder ao PostegreSQL Core poderemos já adicionar a data source e nela teremos vários campos para preencher.
 
 Neste campo por exemplo podemos escolher um nome
 
-![PostegreSetup]()
+![PostegreSetup](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/renameDataSource.png)
 
 Em seguida podemos preencher essas informações, mas atenção os dados tem que ser iguais aos que estão on docker-compose.
 
 Atenção o host URL tem que ser com o gateway do docker (se estiver a usar docker)
 
-![PostegreSetup]()
+![PostegreSetup](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/editConnection.png)
 
 Se o TLS não estiver configurado pode desabilitar
 
@@ -568,10 +568,10 @@ docker inspect <Referencia_do_container>
 
 Antes de confirmar verificar a versão, ao escrever isto o Grafana deixa por defeito a versão 9 do PostgreSQL
 
-![PostegreSetup]()
+![PostegreSetup](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/postegreVersion.png)
 
 No final terá uma mensagem positiva em termos de conexão do Grafana ao PostegreSQL
 
-![FinalOk]()
+![FinalOk](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/connetcionOk.png)
 
 ---
