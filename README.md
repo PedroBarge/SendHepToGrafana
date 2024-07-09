@@ -531,7 +531,7 @@ O Grafana fica a funcionar na porta 3000 podendo aceder através de http://local
 
 Para fazer login usamos “admin” tanto no nome de utilizador como na palavra-passe.
 
-![Grafana's Login Page](https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2Fb7ddc6a0-0f5b-4044-8542-2411835b3088%2F5b588794-c056-49b6-b259-8daccd90af42%2FUntitled.png?table=block&id=f5c476ce-d5be-49f8-b81b-310e29f8e3f9&spaceId=b7ddc6a0-0f5b-4044-8542-2411835b3088&width=2000&userId=63f50c09-1f04-49e6-8042-b386504eb09f&cache=v2)
+(https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2Fb7ddc6a0-0f5b-4044-8542-2411835b3088%2F5b588794-c056-49b6-b259-8daccd90af42%2FUntitled.png?table=block&id=f5c476ce-d5be-49f8-b81b-310e29f8e3f9&spaceId=b7ddc6a0-0f5b-4044-8542-2411835b3088&width=2000&userId=63f50c09-1f04-49e6-8042-b386504eb09f&cache=v2)
 
 ## 1º Passo | Associar uma Data Source ao Grafana
 
