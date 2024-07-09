@@ -531,7 +531,7 @@ O Grafana fica a funcionar na porta 3000 podendo aceder através de http://local
 
 Para fazer login usamos “admin” tanto no nome de utilizador como na palavra-passe.
 
-(https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2Fb7ddc6a0-0f5b-4044-8542-2411835b3088%2F5b588794-c056-49b6-b259-8daccd90af42%2FUntitled.png?table=block&id=f5c476ce-d5be-49f8-b81b-310e29f8e3f9&spaceId=b7ddc6a0-0f5b-4044-8542-2411835b3088&width=2000&userId=63f50c09-1f04-49e6-8042-b386504eb09f&cache=v2)
+![GrafanaLoginPage]()
 
 ## 1º Passo | Associar uma Data Source ao Grafana
 
@@ -540,23 +540,23 @@ Antes de adionarmos uma Data Source teremos que também instalar um plugin
 No nosso lado esquerdo temos um menu vertical onde podemos selecionar o menu de plugins
 
  
-![Untitled](<img width="272" alt="image" src="https://github.com/PedroBarge/SendHepToGrafana/assets/148236408/dec633b3-619f-451e-871d-b67404c8def1">)
+![GrafanaMenu]()
 
 Dentro desse menu teremos que pesquisar pelo plugin do PostegreSQL
 
-![Untitled](<img width="746" alt="image" src="https://github.com/PedroBarge/SendHepToGrafana/assets/148236408/f7809a60-5497-4bf4-bd43-3e51ed4fb0c2">)
+![GrafanaPluginSearch]()
 
 Ao aceder ao PostegreSQL Core poderemos já adicionar a data source e nela teremos vários campos para preencher.
 
 Neste campo por exemplo podemos escolher um nome
 
-![Untitled](<img width="638" alt="image" src="https://github.com/PedroBarge/SendHepToGrafana/assets/148236408/e24a34db-4226-4785-b2f3-42adf5c2835b">)
+![PostegreSetup]()
 
 Em seguida podemos preencher essas informações, mas atenção os dados tem que ser iguais aos que estão on docker-compose.
 
 Atenção o host URL tem que ser com o gateway do docker (se estiver a usar docker)
 
-![Untitled](<img width="363" alt="image" src="https://github.com/PedroBarge/SendHepToGrafana/assets/148236408/f51e8aa6-bc5e-4d8b-a6b9-8757a767851d">)
+![PostegreSetup]()
 
 Se o TLS não estiver configurado pode desabilitar
 
@@ -568,10 +568,10 @@ docker inspect <Referencia_do_container>
 
 Antes de confirmar verificar a versão, ao escrever isto o Grafana deixa por defeito a versão 9 do PostgreSQL
 
-![Untitled](<img width="383" alt="image" src="https://github.com/PedroBarge/SendHepToGrafana/assets/148236408/b78095d8-2327-4650-a5c2-e2ffa7e0efb8">)
+![PostegreSetup]()
 
 No final terá uma mensagem positiva em termos de conexão do Grafana ao PostegreSQL
 
-![Untitled](<img width="1714" alt="image" src="https://github.com/PedroBarge/SendHepToGrafana/assets/148236408/0ceaf53a-d21e-4431-97d3-aa7f8de6dcf5">)
+![FinalOk]()
 
 ---
