@@ -531,35 +531,32 @@ O Grafana fica a funcionar na porta 3000 podendo aceder através de http://local
 
 Para fazer login usamos “admin” tanto no nome de utilizador como na palavra-passe.
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/b7ddc6a0-0f5b-4044-8542-2411835b3088/248a0d34-fbde-4705-a13e-fc1048e8b278/Untitled.png)
+![Grafana's Login Page](<img width="509" alt="image" src="https://github.com/PedroBarge/SendHepToGrafana/assets/148236408/ce4f6cd4-d261-49fa-a668-7ea3ce58d837">)
 
 ## 1º Passo | Associar uma Data Source ao Grafana
 
 Antes de adionarmos uma Data Source teremos que também instalar um plugin
 
-No nosso lado esquerdo temo um menu vertical onde podemos selecionar o menu de plugins
+No nosso lado esquerdo temos um menu vertical onde podemos selecionar o menu de plugins
 
  
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/b7ddc6a0-0f5b-4044-8542-2411835b3088/5b588794-c056-49b6-b259-8daccd90af42/Untitled.png)
+![Untitled](<img width="272" alt="image" src="https://github.com/PedroBarge/SendHepToGrafana/assets/148236408/dec633b3-619f-451e-871d-b67404c8def1">)
 
 Dentro desse menu teremos que pesquisar pelo plugin do PostegreSQL
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/b7ddc6a0-0f5b-4044-8542-2411835b3088/b188a047-6bc6-4b07-9ee5-2b906802e20e/Untitled.png)
+![Untitled](<img width="746" alt="image" src="https://github.com/PedroBarge/SendHepToGrafana/assets/148236408/f7809a60-5497-4bf4-bd43-3e51ed4fb0c2">)
 
 Ao aceder ao PostegreSQL Core poderemos já adicionar a data source e nela teremos vários campos para preencher.
 
-Nesta por exemplo podemos escolher um nome
+Neste campo por exemplo podemos escolher um nome
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/b7ddc6a0-0f5b-4044-8542-2411835b3088/c7193ebe-fa35-49a2-ac12-7994fc5fbd6a/Untitled.png)
+![Untitled](<img width="638" alt="image" src="https://github.com/PedroBarge/SendHepToGrafana/assets/148236408/e24a34db-4226-4785-b2f3-42adf5c2835b">)
 
 Em seguida podemos preencher essas informações, mas atenção os dados tem que ser iguais aos que estão on docker-compose.
 
 Atenção o host URL tem que ser com o gateway do docker (se estiver a usar docker)
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/b7ddc6a0-0f5b-4044-8542-2411835b3088/4bb3b28a-9e52-49a3-8065-370aa00dbbd6/Untitled.png)
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/b7ddc6a0-0f5b-4044-8542-2411835b3088/0905ab2d-9f72-4971-9ebb-bdd266f4fb2e/Untitled.png)
+![Untitled](<img width="363" alt="image" src="https://github.com/PedroBarge/SendHepToGrafana/assets/148236408/f51e8aa6-bc5e-4d8b-a6b9-8757a767851d">)
 
 Se o TLS não estiver configurado pode desabilitar
 
@@ -571,10 +568,10 @@ docker inspect <Referencia_do_container>
 
 Antes de confirmar verificar a versão, ao escrever isto o Grafana deixa por defeito a versão 9 do PostgreSQL
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/b7ddc6a0-0f5b-4044-8542-2411835b3088/12ece4e1-b5f8-4a19-9632-0a4b0056bc16/Untitled.png)
+![Untitled](<img width="383" alt="image" src="https://github.com/PedroBarge/SendHepToGrafana/assets/148236408/b78095d8-2327-4650-a5c2-e2ffa7e0efb8">)
 
 No final terá uma mensagem positiva em termos de conexão do Grafana ao PostegreSQL
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/b7ddc6a0-0f5b-4044-8542-2411835b3088/8704d536-3bbf-43d9-a4ca-0f06afd03ce2/Untitled.png)
+![Untitled](<img width="1714" alt="image" src="https://github.com/PedroBarge/SendHepToGrafana/assets/148236408/0ceaf53a-d21e-4431-97d3-aa7f8de6dcf5">)
 
 ---
