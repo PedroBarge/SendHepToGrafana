@@ -4,7 +4,7 @@ import { extractFieldFromPayload, extractFristLineFromPayload } from "./utils.js
 import { pool } from "./database.js";
 
 socket.on("connect", () => {
-  console.log("Conectado ao servidor WebSocket");
+  console.log("Websocket connected");
   createJsonDataTable();
 });
 
@@ -29,16 +29,16 @@ socket.on("hep", async (message) => {
 
   try {
     const result = await pool.query(queryText, [type, rcinfo, srcIp, dstIp, srcPort, dstPort, payload, via, call_id, from, to, date]);
-    console.log("Dados salvos com sucesso");
+    console.log("Data saved successfully");
   } catch (err) {
-    console.error("Erro ao salvar dados:", err);
+    console.error("Data saving error:", err);
   }
 });
 
 socket.on("error", (error) => {
-  console.log("Erro do servidor:", error);
+  console.log("Server error:", error);
 });
 
 socket.on("disconnect", () => {
-  console.log("Desconectado do servidor WebSocket");
+  console.log("WebSocket disconnected");
 });

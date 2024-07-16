@@ -21,8 +21,8 @@ export async function createJsonDataTable() {
   `;
   try {
     const result = await pool.query(queryText);
-    console.log("Tabela criada com sucesso");
+    console.log("Table created successfully");
   } catch (err) {
-    console.error("Erro ao criar tabela:", err);
+    console.error("Error creating table:", err);
   }
 }
