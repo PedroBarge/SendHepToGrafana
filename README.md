@@ -540,3 +540,54 @@ Now you have a fully functional HEP packet receiver that stores data in PostgreS
 
 ---
 This concludes the basic setup for Asterisk and HEP server configurations and the client-side setup to receive, decode, and store HEP packets.
+
+
+# Grafana Configuration
+
+At the beginning of the last chapter, in the docker-compose, we already set up Grafana. Grafana is running on port 3000 and can be accessed via [http://localhost:3000](http://localhost:3000).
+
+To log in, use "admin" for both the username and password.
+
+![GrafanaLoginPage](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/loginPage.png)
+
+## Step 1 | Adding a Data Source to Grafana
+
+Before adding a Data Source, we need to install a plugin.
+
+On the left side, we have a vertical menu where we can select the plugins menu.
+
+![GrafanaMenu](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/menuPlugins.png)
+
+In this menu, we need to search for the PostgreSQL plugin.
+
+![GrafanaPluginSearch](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/pluginPostegre.png)
+
+By accessing PostgreSQL Core, we can already add the data source, and it will have several fields to fill in.
+
+For example, we can choose a name in this field.
+
+![PostegreSetup](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/renameDataSource.png)
+
+Next, we can fill in this information, but be careful that the data must match what is in docker-compose.
+
+Note that the host URL must be with the Docker gateway (if you are using Docker).
+
+![PostegreSetup](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/editConnection.png)
+
+If TLS is not configured, you can disable it.
+
+To see the Docker gateway, you need to copy the container reference and write in the console:
+
+```bash
+docker inspect <Container_Reference>
+```
+
+Before confirming, check the version; when writing this, Grafana defaults to version 9 of PostgreSQL.
+
+![PostegreSetup](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/postegreVersion.png)
+
+In the end, you will have a positive message regarding the connection from Grafana to PostgreSQL.
+
+![FinalOk](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/connetcionOk.png)
+
+---
