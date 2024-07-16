@@ -538,9 +538,9 @@ npm start
 
 Now you have a fully functional HEP packet receiver that stores data in PostgreSQL, ready to be linked to Grafana for visualization.
 
----
 This concludes the basic setup for Asterisk and HEP server configurations and the client-side setup to receive, decode, and store HEP packets.
 
+---
 
 # Grafana Configuration
 
