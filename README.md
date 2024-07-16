@@ -1,26 +1,25 @@
-Esta documentação irá explicar como configurar o Asterisk para enviar dados e pacatos para o HEP server. Também irá explicar como fazer um HEP server do zero.
+This documentation will explain how to configure Asterisk to send data and packets to the HEP server. It will also explain how to set up a HEP server from scratch.
 
-Todas estas configurações serão abordadas de maneira básica.
+All these configurations will be covered in a basic manner.
 
 ---
 
-### Como criar e configurar o Asterisk para ser possível enviar os pacotes.
+### How to create and configure Asterisk to send packets.
 
-Primeiro é necessário instalar o Asterisk, para isso que se segue um breve passo-a-passo:
+First, it is necessary to install Asterisk. Below is a brief step-by-step guide:
 
-## 1º Passo | Instalação e configuração do Asterisk
+## Step 1 | Installation and configuration of Asterisk
 
-Obs: Instalado numa maquina virtual linux Ubuntu
+Note: Installed on a Linux Ubuntu virtual machine
 
-1º Ter a certeza que o pc server está atualizado e instalar as dependências (confirmar versões)
+1. Ensure the PC server is updated and install dependencies (confirm versions)
 
 ```bash
 sudo apt-get update
 sudo apt-get install -y build-essential libncurses5-dev libssl-dev libxml2-dev libsqlite3-dev uuid-dev libedit-dev libjansson-dev
-
 ```
 
-2º Ir a pasta src da maquina para instalar o Asterisk.
+2. Go to the src directory of the machine to install Asterisk.
 
 ```bash
 cd /usr/src
@@ -29,52 +28,52 @@ sudo tar zxvf astericdsk-20-current.tar.gz
 cd asterisk-20.*
 ```
 
-3º Depois do download e descomprimir o Asterisk está na hora de compilar a app e instalar
+3. After downloading and extracting Asterisk, it's time to compile and install the app.
 
 ```bash
-sudo ./configure #se faltar algum pacote de desenvolvimento será notificado aqui se tudo correr bem
+sudo ./configure # If any development package is missing, you will be notified here. If everything goes well
 ```
 
-Quando instalado com sucesso
+When installed successfully
 
 ```bash
-sudo make menuselect #opcional apenas para verficar se os pacotes corretos estão instalados ou adicionar mais
+sudo make menuselect # Optional, just to check if the correct packages are installed or add more
 sudo make
 sudo make install
-#depois de intalar
-#estes codigos vão já criar ficheiros .conf dos pacotes acima selecionados
+# After installing
+# These commands will already create .conf files of the above-selected packages
 sudo make samples
 sudo make config
 sudo ldconfig
 ```
 
-Instalação feita com sucesso. O próximo passo será a configuração do Asterisk.
+Installation was successful. The next step is to configure Asterisk.
 
 ```bash
 cd /etc/asterisk
 ```
 
-Agora dentro da pasta do Asterisk vamos iniciar uma configuração base para podermos ligar telefones ao serviço.
+Now inside the Asterisk directory, we will start with a basic configuration to connect phones to the service.
 
-Apesar de termos vários ficheiros .conf apenas vamos trabalhar com os “extensions.conf”, “hep.conf” e “pjsip.conf”
+Although we have several .conf files, we will only work with “extensions.conf”, “hep.conf”, and “pjsip.conf”.
 
-obs: Todos os documentos estão bem documentos e ja com exemplos excelentes e podem ser usados bastando apenas 
+Note: All documents are well documented and already have excellent examples that can be used by simply modifying them.
 
-Antes de começar-mos a escrever nos ficheiros acima aconselho a usar o comando:
+Before we start writing in the above files, I advise using the command:
 
 ```bash
 sudo -s
 ```
 
-Este comando ativa o superutilizador e assim fica mais fácil a alteração de código.
+This command activates the superuser, making code alterations easier.
 
-1º Vamos criar utilizadores para se poderem ligar ao nosso Asterisk. Vamos abrir o “pjsip.conf”:
+1. We will create users to connect to our Asterisk. Let's open “pjsip.conf”:
 
 ```bash
 nano pjsip.conf
 ```
 
-Logo de inicio já podemos descomentar o transporte de UDP 
+Right at the beginning, we can uncomment the UDP transport 
 
 ```bash
 [transport-udp]
@@ -84,7 +83,7 @@ bind0.0.0.0.0:5060
 local_net = 192.168.0.0/24
 ```
 
-Em seguida podemos então configurar endpoints para pjsip telefones
+Next, we can configure endpoints for pjsip phones
 
 ```bash
 [utilizador1]
@@ -126,9 +125,9 @@ type=aor
 max_contacts=1
 ```
 
-Depois de escrever isto basta guardar o documento para avançarmos para o “extensions.conf”. 
+After writing this, save the document to proceed to “extensions.conf”.
 
-Neste documento vamos criar o context que usamos nos utilizadores.
+In this document, we will create the context used for the users.
 
 ```bash
 [from-external]
@@ -139,52 +138,51 @@ exten => utilizador2,1,Dial(PJSIP/utilizador2,20)
 exten => utilizador2,n,Hangup()
 ```
 
-Depois de escrever isto basta guardar o documento para avançarmos para o “hep.conf”. 
+After writing this, save the document to proceed to “hep.conf”.
 
-Neste documento vamos configurar o HEP
+In this document, we will configure HEP
 
 ```bash
 [general]
 enable = yes
-capture_address = 127.0.0.1:9060 # IP do servidor HEP mais porta 
-capture_name = HOME #para ser depois mais fácil encontrar os pacotes
+capture_address = 127.0.0.1:9060 # IP of the HEP server and port
+capture_name = HOME # To make it easier to find the packets later
 uuid_type = call-id
 ```
 
-E agora já podemos conectar os telefones ao Asterisk, basta executar o comando:
+Now we can connect the phones to Asterisk, just run the command:
 
 ```jsx
 asterisk -cvvv
 ```
 
-## 2º Passo | HEP server
+## Step 2 | HEP server
 
-Aconselho a fazer setup do servidor HEP no mesmo ambiente que foi feita a instalação do Asterisk.
+I advise setting up the HEP server in the same environment where Asterisk was installed.
 
-Este servidor foi feito em NODE JS por já haver [bibliotecas de suporte para está situação](https://www.npmjs.com/package/hep-js).
+This server was made in NODE JS as there are [support libraries for this situation](https://www.npmjs.com/package/hep-js).
 
-Antes de avançar por favor verifique que tem ja instalado VisualStudio (ou outra interface que consiga programar JavaScrpit), node e npm.
+Before proceeding, please check that you have VisualStudio (or another interface capable of programming JavaScript), node, and npm installed.
 
-Depois ao abrir o VisualStudio vamos dar inicio a construção do servidor:
+Then, open VisualStudio to start building the server:
 
 ```jsx
 npm init
-//eu usei estas bibliotecas por favor verificar se algumas esta deprecada 
-//ou se existe alternativa melhor
-npm i drgam http socket.io hep-js
+// I used these libraries, please check if any are deprecated or if there is a better alternative
+npm i dgram http socket.io hep-js
 ```
 
-Este servidor vai ser responsável por receber e enviar os pacotes HEP vindos do Asterisk
+This server will be responsible for receiving and sending HEP packets from Asterisk.
 
-Temos que ter atenção a porta e onde o servidor Asterisk esta hospedado.
+We need to pay attention to the port and where the Asterisk server is hosted.
 
-Novamente este servidor foi feito no mesmo ambiente do Asterisk, por isso usamos o IP 127.0.0.1
+Again, this server was made in the same environment as Asterisk, so we use the IP 127.0.0.1
 
-Vamos começar primeiro por ver o que é necessário nesta transição de informação.
+Let's first see what is needed for this information transition.
 
-Eu aconselho por começarmos do mais simples até ao mais complexo.
+I advise starting from the simplest to the most complex.
 
-Estrutura de pasta e documentos 
+Folder and document structure
 
 ```scss
 - src/
@@ -195,7 +193,7 @@ Estrutura de pasta e documentos
   - config.js
 ```
 
-Irei começar pelo decoderHEP.js pois é o mais simples:
+I will start with decoderHEP.js as it is the simplest:
 
 ```jsx
 import HEPjs from 'hep-js';
@@ -204,12 +202,11 @@ export function decodeHEPMessage(message) {
     const data = HEPjs.decapsulate(message);
     return { hep: data };
 }
-
 ```
 
-Usando já um função oferecida pela biblioteca a descodificação da mensagem fica mais rápido de fazer.
+Using a function provided by the library, decoding the message becomes faster.
 
-Seguindo para o udpServer.js e httpServer.js 
+Moving on to udpServer.js and httpServer.js 
 
 ```jsx
 import dgram from 'dgram';
@@ -218,47 +215,45 @@ import { io } from './httpServer.js';
 
 const udpServer = dgram.createSocket('udp4');
 
-//Porta e IP que especificamos no hep.conf do Asterisk
+// Port and IP specified in the hep.conf of Asterisk
 const UDP_PORT = 9060; 
 const UDP_HOST = '127.0.0.1'; 
 
 udpServer.on('message', (message) => {
     const hepData = decodeHEPMessage(message);
-    console.log(`Pacote HEP recebido`);
+    console.log(`HEP packet received`);
    
     io.emit('hep', hepData);
 });
 
 udpServer.on('listening', () => {
     const address = udpServer.address();
-    console.log(`Servidor HEP em ${address.address}:${address.port}`);
+    console.log(`HEP server on ${address.address}:${address.port}`);
 });
 
 udpServer.on('error', (err) => {
-    console.error(`Erro no servidor UDP: ${err.stack}`);
+    console.error(`UDP server error: ${err.stack}`);
     udpServer.close();
 });
 
 udpServer.bind(UDP_PORT, UDP_HOST);
 
 export default udpServer;
-
 ```
 
-Vamos criar rapidamente o config.js para termos informação dos IPS e das portas lá 
+Let's quickly create config.js to store the information about IPs and ports.
 
-Recomendo usarmos os ficheros .env para exemplo usaremos isto
+I recommend using .env files; for example, we'll use this
 
 ```jsx
 export const UDP_PORT = 9060;
 export const UDP_HOST = '192.168.2.235';
 export const WS_PORT = 1234;
-
 ```
 
 ```jsx
 import http from 'http';
-import {Server} from 'socket.io';
+import { Server } from 'socket.io';
 import udpServer from './udpServer.js';
 
 const app = http.createServer();
@@ -273,54 +268,52 @@ const io = new Server(app, {
 const WS_PORT = 1234;
 
 app.listen(WS_PORT, () => {
-    console.log(`Servidor WebSocket a trabalhar em http://localhost:${WS_PORT}`);
+    console.log(`WebSocket server running on http://localhost:${WS_PORT}`);
 });
 
 export { app, io };
-
 ```
 
-E por fim o app.js
+And finally app.js
 
 ```jsx
 // app.js
 import http from 'http';
-import { app } from './httpServer.js'; // Importa 'app' do servidor HTTP
+import { app } from './httpServer.js'; // Import 'app' from the HTTP server
 import udpServer from './udpServer.js';
 
-// Criação do servidor HTTP
+// Create the HTTP server
 const httpServer = http.createServer(app);
 
 export { app };
-
 ```
 
-Uma nota importante no package.json não nos podemos esquecer de colocar duas anotações importantes o type e o start.
+An important note in package.json, don't forget to add two important annotations, type and start.
 
-Exemplo:
+Example:
 
 ```json
 "type": "module",
-"scripts":{
-	"start": "node app.js"
-	}
+"scripts": {
+    "start": "node app.js"
+}
 ```
 
-E assim damos por terminado as configurações e código feito no lado da virtual machine e podemos iniciar então as configurações na parte de cliente.
+This completes the configurations and code on the virtual machine side, and we can then start the configurations on the client side.
 
 ---
 
-# Introdução e Configuração inicial do lado do Cliente / Recetor de pacotes HEP
+# Introduction and Initial Configuration on the Client Side / HEP Packet Receiver
 
-Na parte de cliente iremos configurar a recepção dos pacotes HEP, retirar a informação mais importante e guardar numa base de dados para podermos liga-la ao Grafana.
+On the client side, we will configure the reception of HEP packets, extract the most important information, and store it in a database to link it to Grafana.
 
-Neste exemplo vou usar PostgresSQL para guardar os dados.
+In this example, I will use PostgreSQL to store the data.
 
-Antes de começar verificar se tem instalado no cliente/host Docker, docker-compose, Nodejs, npm e alguma interface que permita conexão com o PostegreSQl (por exemplo DBeaver).
+Before starting, check if Docker, docker-compose, Node.js, npm, and an interface to connect with PostgreSQL (such as DBeaver) are installed on the client/host.
 
-## 1º Passo | docker-compose
+## Step 1 | docker-compose
 
-Neste exemplo vou usar o PostgresSQL 13 pois é o que estou mais habituado
+In this example, I will use PostgreSQL 13 as it is the one I am most familiar with.
 
 ```yaml
 volumes:
@@ -333,245 +326,217 @@ networks:
 services:
   postgres:
     image: postgres:13
-    container_name: ${Nome para aparecer no Docker:-postegres}
+    container_name: ${Container_Name:-postgres}
     environment:
-      POSTGRES_USER: ${Nome_do_Utilizador:-postegres}
-      POSTGRES_PASSWORD: ${Palavra_Passe_do_Utilizador:-postegres}
-      POSTGRES_DB: ${Nome_da_Base_de_Dados:-postegres}
+      POSTGRES_USER: ${Username:-postgres}
+      POSTGRES_PASSWORD: ${User_Password:-postgres}
+      POSTGRES_DB: ${Database_Name:-postgres}
     ports:
-      - "5432:5432" #Portas default do postgres
-    networks:
-      - grafanahep
+      - "5432:5432" # Default postgres
+
+ port
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3000:3000"
     networks:
       - grafanahep
-
-# Para poder instalar este docker-compose 
-# docker-compose up -d
 ```
 
-Depois de executar isto já se pode fazer ligação ao DBeaver.
+In the same directory, create a .env file with:
 
-## 2º Passo | Organização de ficheiros
+```env
+Container_Name=postgres
+Username=postgres
+User_Password=postgres
+Database_Name=postgres
+```
 
-Também no lado do cliente podemos ter algo semelhante ao do servidor em termos de organização de código e de ficheiros:
+To start the database, navigate to the directory containing the docker-compose.yaml and run:
+
+```bash
+docker-compose up -d
+```
+
+This will start the PostgreSQL container in the background.
+
+## Step 2 | Node.js
+
+Now, we will create the server to receive the HEP packets, decode them, and store the information in the database.
+
+Check if VisualStudio or another programming interface is installed, as well as Node.js and npm.
+
+First, create a directory to work in:
+
+```bash
+mkdir grafanaHEP
+cd grafanaHEP
+```
+
+In this directory, run:
+
+```bash
+npm init
+```
+
+For this example, I will use these libraries:
+
+```bash
+npm i dgram http socket.io pg
+```
+
+Once this is done, we will create a folder structure similar to the previous example:
 
 ```scss
 - src/
-  - app.js        
-  - database.js
-  - queries.js
-  - socketClient.js
-  - utils.js
+  - app.js
+  - udpServer.js
+  - httpServer.js
+  - hepHelper.js
+  - db.js
+  - config.js
 ```
 
-## 3º Passo | Código
+I will follow the same logic as in the previous example, starting with the simplest files.
 
-Novamente vou começar do ficheiro mais simples até ao app.js
-
-Vamos começar pelo ficheiro que permite a ligação ao WebServer que esta no mesmo ambiente do Asterisk
+First, config.js:
 
 ```jsx
-//socketClient.js
-import { io } from "socket.io-client";
-
-const socket = io(`http://${IP_HTTP_SERVER}:${PORT_UDP_SERVER}`);
-
-export default socket;
+// config.js
+export const UDP_PORT = 9060;
+export const UDP_HOST = '192.168.2.235';
+export const WS_PORT = 1234;
+export const DB_CONFIG = {
+    user: 'postgres',
+    host: 'localhost',
+    database: 'postgres',
+    password: 'postgres',
+    port: 5432,
+};
 ```
 
-Tendo em conta que a criação da base de dados ja foi feira no docker-compose, segue-se o código de configuração
+Next, hepHelper.js:
 
 ```jsx
-//database.js
-import pg from "pg";
-const { Pool } = pg;
+import HEPjs from 'hep-js';
 
-export const pool = new Pool({
-  user: "admin",
-  host: "localhost",
-  database: "container",
-  password: "admin",
-  port: 5432,
-});
-```
-
-Já tendo o ficheiro anterior completo podemos ja preparar a query para criar a tabela na base de dados:
-
-```jsx
-//queries.js
-import { pool } from "./database.js";
-
-export async function createJsonDataTable() {
-  const queryText = `
-    CREATE TABLE IF NOT EXISTS json_data (
-      id SERIAL PRIMARY KEY, 
-      type VARCHAR, 
-      rcinfo VARCHAR, 
-      srcIp VARCHAR,  
-      dstIp VARCHAR, 
-      srcPort VARCHAR, 
-      dstPort VARCHAR, 
-      payload VARCHAR, 
-      via VARCHAR, 
-      call_id VARCHAR, 
-      "from" VARCHAR, 
-      "to" VARCHAR, 
-      "date" VARCHAR, 
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-  `;
-  try {
-    const result = await pool.query(queryText);
-    console.log("Tabela criada com sucesso");
-  } catch (err) {
-    console.error("Erro ao criar tabela:", err);
-  }
-}
-/*
-Legenda: 
-	- type: Se o dado é um registo, um invite, etc...
-	- rcinfo: Proveniente do metodo de "decapsulate" do HEP-JS
-	- srcIp: Source IP
-	- dstIp: Destination IP
-	- srcPort: Source Port
-	- dstPort: Destination Port
-	- payload: Proveniente do metodo de "decapsulate" do HEP-JS
-	- via: 
-	- call_id: O ID da chamada
-	- from: Mostra o nome ou numero associado ao IP que esta a fazer a chamada
-	- to: Mostra o nome ou numero associado ao IP que esta a receer a chamada
-	- date: Informação opcional que vem dentro do payload
-	- created_at: Campo que preenche automaticamente a data de inserção dos dados na tabel
-*/
-```
-
-Em seguida o utils.js. Este ficheiro serviu para colocar duas funções para poderemos fazer a divisão da informação que vem no payload do HEP para assim depois podermos preencher os campos da tabela. 
-
-```jsx
-export function extractFieldFromPayload(payload, fieldName) {
-  const regex = new RegExp(`${fieldName}:\\s*(.*)`, "i");
-  const match = payload.match(regex);
-  return match ? match[1].trim() : null;
-}
-
-export function extractFristLineFromPayload(payload) {
-  const regex = new RegExp("^\\s*(.*)", "i");
-  const match = payload.match(regex);
-  return match ? match[1].trim() : null;
+export function decodeHEPMessage(message) {
+    const data = HEPjs.decapsulate(message);
+    return { hep: data };
 }
 ```
 
-Por fim basta apenas o app.js responsável por receber e gerir tudo
+And db.js to connect to PostgreSQL:
 
 ```jsx
-//app.js
-import socket from "./socketClient.js";
-import { createJsonDataTable } from "./queries.js";
-import { extractFieldFromPayload, extractFristLineFromPayload } from "./utils.js";
-import { pool } from "./database.js";
+import { Pool } from 'pg';
+import { DB_CONFIG } from './config.js';
 
-socket.on("connect", () => {
-  console.log("Conectado ao servidor WebSocket");
-  createJsonDataTable();
-});
+const pool = new Pool(DB_CONFIG);
 
-socket.on("hep", async (message) => {
-  const { hep } = message;
-  const { rcinfo, payload } = hep;
-  const { srcPort, dstPort, srcIp, dstIp } = rcinfo;
-
-  const type = extractFristLineFromPayload(payload);
-  const via = extractFieldFromPayload(payload, 'Via');
-  const call_id = extractFieldFromPayload(payload, 'Call-ID');
-  const from = extractFieldFromPayload(payload, 'From');
-  const to = extractFieldFromPayload(payload, 'To');
-  const date = extractFieldFromPayload(payload, 'Date');
-
-  const queryText = `
-    INSERT INTO json_data 
-      (type, rcinfo, srcIp, dstIp, srcPort, dstPort, payload, via, call_id, "from", "to", "date") 
-    VALUES 
-      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-  `;
-
-  try {
-    const result = await pool.query(queryText, [type, rcinfo, srcIp, dstIp, srcPort, dstPort, payload, via, call_id, from, to, date]);
-    console.log("Dados salvos com sucesso");
-  } catch (err) {
-    console.error("Erro ao salvar dados:", err);
-  }
-});
-
-socket.on("error", (error) => {
-  console.log("Erro do servidor:", error);
-});
-
-socket.on("disconnect", () => {
-  console.log("Desconectado do servidor WebSocket");
-});
-
+export default pool;
 ```
 
-E assim dou por concluído a configuração do recetor de pacotes HEP e a sua devida inserção na base de dados
+Then, httpServer.js:
 
----
+```jsx
+import http from 'http';
+import { Server } from 'socket.io';
+import udpServer from './udpServer.js';
 
-# Configuração do Grafana
+const app = http.createServer();
 
-No inicio do último capítulo, no docker-compose, já deixamos preparado o Grafana.
-O Grafana fica a funcionar na porta 3000 podendo aceder através de http://localhost:3000.
+const io = new Server(app, {
+    cors: {
+        origin: "http://localhost:5173",
+        methods: ["GET","POST"]
+    }
+});
 
-Para fazer login usamos “admin” tanto no nome de utilizador como na palavra-passe.
+const WS_PORT = 1234;
 
-![GrafanaLoginPage](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/loginPage.png)
+app.listen(WS_PORT, () => {
+    console.log(`WebSocket server running on http://localhost:${WS_PORT}`);
+});
 
-## 1º Passo | Associar uma Data Source ao Grafana
+export { app, io };
+```
 
-Antes de adionarmos uma Data Source teremos que também instalar um plugin
+And udpServer.js:
 
-No nosso lado esquerdo temos um menu vertical onde podemos selecionar o menu de plugins
+```jsx
+import dgram from 'dgram';
+import { decodeHEPMessage } from './hepHelper.js';
+import pool from './db.js'; 
+import { io } from './httpServer.js'; 
 
- 
-![GrafanaMenu](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/menuPlugins.png)
+const udpServer = dgram.createSocket('udp4');
 
-Dentro desse menu teremos que pesquisar pelo plugin do PostegreSQL
+const UDP_PORT = 9060; 
+const UDP_HOST = '192.168.2.235'; 
 
-![GrafanaPluginSearch](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/pluginPostegre.png)
+udpServer.on('message', async (message) => {
+    const hepData = decodeHEPMessage(message);
+    console.log(`HEP packet received`);
 
-Ao aceder ao PostegreSQL Core poderemos já adicionar a data source e nela teremos vários campos para preencher.
+    io.emit('hep', hepData);
 
-Neste campo por exemplo podemos escolher um nome
+    const query = 'INSERT INTO hep_data (json_data) VALUES ($1)';
+    await pool.query(query, [hepData]);
+});
 
-![PostegreSetup](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/renameDataSource.png)
+udpServer.on('listening', () => {
+    const address = udpServer.address();
+    console.log(`HEP server on ${address.address}:${address.port}`);
+});
 
-Em seguida podemos preencher essas informações, mas atenção os dados tem que ser iguais aos que estão on docker-compose.
+udpServer.on('error', (err) => {
+    console.error(`UDP server error: ${err.stack}`);
+    udpServer.close();
+});
 
-Atenção o host URL tem que ser com o gateway do docker (se estiver a usar docker)
+udpServer.bind(UDP_PORT, UDP_HOST);
 
-![PostegreSetup](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/editConnection.png)
+export default udpServer;
+```
 
-Se o TLS não estiver configurado pode desabilitar
+Finally, app.js:
 
-para ver o gateway do docker tem que copiar referencia do container e escrever na consola
+```jsx
+import http from 'http';
+import { app } from './httpServer.js'; 
+import udpServer from './udpServer.js'; 
+
+const httpServer = http.createServer(app);
+
+export { app };
+```
+
+Don't forget to add the necessary configurations to package.json:
+
+```json
+"type": "module",
+"scripts": {
+    "start": "node app.js"
+}
+```
+
+Now, we need to configure the database table.
+
+Connect to PostgreSQL using your preferred interface (e.g., DBeaver) and run:
+
+```sql
+CREATE TABLE hep_data (
+    id SERIAL PRIMARY KEY,
+    json_data JSONB
+);
+```
+
+To run the server, navigate to the directory containing app.js and run:
 
 ```bash
-docker inspect <Referencia_do_container>
+npm start
 ```
 
-Antes de confirmar verificar a versão, ao escrever isto o Grafana deixa por defeito a versão 9 do PostgreSQL
-
-![PostegreSetup](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/postegreVersion.png)
-
-No final terá uma mensagem positiva em termos de conexão do Grafana ao PostegreSQL
-
-![FinalOk](https://github.com/PedroBarge/SendHepToGrafana/blob/main/imgs%20documentation/connetcionOk.png)
+Now you have a fully functional HEP packet receiver that stores data in PostgreSQL, ready to be linked to Grafana for visualization.
 
 ---
+This concludes the basic setup for Asterisk and HEP server configurations and the client-side setup to receive, decode, and store HEP packets.
